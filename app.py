@@ -38,7 +38,7 @@ def overview():
 # --- Trang How It Works ---        
 @app.route("/howitworks")
 def howitworks():
-    return render_template("HowItWorks.html")   
+    return render_template("Howitworks.html")   
 # --- Trang Contact ---        
 @app.route("/contact")
 def contact():
@@ -99,5 +99,6 @@ def predict():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
 app.run(host="0.0.0.0", port=port, debug=True)
+
 
 
