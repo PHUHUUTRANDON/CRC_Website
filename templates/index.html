@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Colorectal Cancer Prediction</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://3Dmol.csb.pitt.edu/build/3Dmol-min.js"></script>
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .navbar {
+      background-color: #002855;
+    }
+    .navbar-brand, .nav-link {
+      color: white !important;
+    }
+    .card {
+      border-radius: 15px;
+      overflow: hidden; /* ép con theo border-radius */
+    }
+    .btn-primary {
+      background-color: #004aad;
+      border: none;
+    }
+    .btn-primary:hover {
+      background-color: #003580;
+    }
+    .result-box {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-top: 15px;
+      text-align: center;
+    }
+    .viewer {
+      width: 100%;
+      height: 300px;
+      margin-bottom: 10px;
+    }
+    .bgbl{
+      background-color: #f2f9fc;
+    }
+
+    /*  Style cho dropdown cùng màu navbar */
+    .navbar .dropdown-menu {
+      background-color: #002855; /* cùng màu navbar */
+      border: none;              /* bỏ viền */
+    }
+    .navbar .dropdown-menu .dropdown-item {
+      color: white;            /* chữ trắng */
+    }
+    .navbar .dropdown-menu .dropdown-item:hover {
+      background-color: #004aad; /* xanh nhạt hơn khi hover */
+      color: #fff;
+    }
+    .navbar .nav-link:hover {
+      color: gray !important;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div width="100%" align="center" style="padding: 10px; display: flex; align-items: center; justify-content: center; gap: 140px; background-color: white;">
+    <img src="{{ url_for('static', filename='images/logo_Cancer.png') }}" alt="Logo" style="height: 90px; margin-right: 0px;">
+    <p style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: 900; font-size: 200%; color: #003580;">Deep Learning Approaches for Non-invasive <br> Colorectal Cancer Prediction</p>
+    <a href="https://en.uhsvnu.edu.vn/" target="_blank"><img src="{{ url_for('static', filename='images/logo_UHS.png') }}" alt="Logo" style="height: 60px; margin-right: 0px;"></a>
+  </div>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <ul class="navbar-nav d-flex gap-5">
+      <li class="nav-item" d>
+       <a class="nav-link" href="/index" style="font-size: 20px; background-color: #7cacdf; color: white; padding: 5px 14px;">Predict</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/overview" style="font-size: 20px;">CRC Overview</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/howitworks" style="font-size: 20px;">How It Works</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/contact" style="font-size: 20px;">Contact</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/aboutus" style="font-size: 20px;">About Us</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="langDropdown" role="button"
+           data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 20px;">
+          Change Language
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="langDropdown">
+          <li><a class="dropdown-item" href="?lang=en">English</a></li>
+          <li><a class="dropdown-item" href="?lang=vi">Tiếng Việt</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+
+<!-- Bootstrap Bundle JS (cần cho dropdown hoạt động) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+  <!-- Content -->
+  <div class="container mt-4">
+    <div class="row">
+      <!-- Left form -->
+      <div class="col-md-4">
+        <div class="card shadow p-3 mb-4">
+          <img src="{{ url_for('static', filename='images/CRC.png') }}" class="img-fluid rounded mb-3" alt="CRC">
+          <h5 class="text-center" style="font-size: 30px;">CRC Prediction</h5>
+          <form id="predictForm">
+            <div class="mb-3">
+              <label style="font-weight: bold;" class="form-label">CT ECHDC3</label>
+              <input type="number" step="0.01" class="form-control" id="ct_echdc3" required>
+            </div>
+            <div class="mb-3">
+              <label style="font-weight: bold;" class="form-label">CT SORT1</label>
+              <input type="number" step="0.01" class="form-control" id="ct_sort1" required>
+            </div>
+            <div class="mb-3">
+              <label style="font-weight: bold;" class="form-label">CT GAPDH (Reference)</label>
+              <input type="number" step="0.01" class="form-control" id="ct_ref" required>
+            </div>
+            <div class="mb-3">
+              <label style="font-weight: bold;" class="form-label">Sex</label>
+              <select class="form-select" id="sex" required>
+                <option value="">Select...</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label style="font-weight: bold;" class="form-label">Age</label>
+              <input type="number" class="form-control" id="age" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100" style="font-size: 20px; font-weight: 500;">Predict</button>
+          </form>
+          <div id="result" class="result-box"></div>
+          <p style="color: gray; font-size: 15px;">We advise patients to use this tool in collaboration with their doctors. This tool only serves as reference and does not replace profesional medical advice.</p>
+        </div>
+      </div>
+
+      <!-- Right content -->
+      <div class="col-md-8">
+        <div class="card shadow p-3 mb-4">
+          <h5>Protein 3D Structures of Potential Genes</h5>
+          <div class="row">
+            <div class="col-md-6">
+              <p style="font-size: 14px;">This gene encodes a member of the VPS10-related sortilin family of proteins. The encoded preproprotein is proteolytically processed by furin to generate the mature receptor.</p>
+              <h6>SORT1 (PDB ID: 4MSL)</h6>
+              <div class="card p-2 mb-3">
+                <!-- <h6>SORT1 (PDB ID: 4MSL)</h6> -->
+                <div id="viewer_sort1" class="viewer"></div>
+                <p>Andersen, Jacob Lauwring et al. "Identification of the first small-molecule ligand of the neuronal 
+                  receptor sortilin and structure determination of the receptor-ligand complex." Acta Crystallographica 
+                  Section D: Biological Crystallography, vol. 70, pt. 2 (2014): 451–460. <a href="#">DOI: 10.1107/S1399004713030149.</a><br> Licensed under CC BY-4.0</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <p style="font-size: 14px;">Predicted to enable enoyl-CoA hydratase activity. Involved in positive regulation of cellular response to insulin stimulus. Located in mitochondrion.</p>
+              <h6>ECHDC3 (PDB ID: 2VX2)</h6>
+              <div class="card p-2 mb-3">
+                <!-- <h6>ECHDC3 (PDB ID: 2VX2)</h6> -->
+                <div id="viewer_echdc3" class="viewer"></div>
+                <p>Yue WW, Guo K, Kothap P, et al. Crystal structure of human enoyl Coenzyme A hydratase containing protein 3 (ECHDC3). 
+                  Protein Data Bank. Published October 1, 2008. Accessed August 30, 2025. <a href="#">DOI: 10.2210/pdb2vx2/pdb.</a><br> Licensed under CC BY-4.0</p>
+                  <br>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Model Performance -->
+        <div class="card shadow p-3">
+          <h5 class="text-left">Model Performance Assessing by AUC and Sensitivity Using Deep Learing Model</h5>
+          <div class="row text-center">
+            <div class="col-md-3">
+              <div class="p-3 bgbl rounded"><p style="font-weight: 500;">AUC Published Data <br><b style="font-size: larger; color: #003580;">0.8294</b></p></div>
+            </div>
+            <div class="col-md-3">
+              <div class="p-3 bgbl rounded"><p style="font-weight: 500;">AUC Vietnam Data <br><b style="font-size: larger; color: #003580;">0.8124</b></p></div>
+            </div>
+            <div class="col-md-3">
+              <div class="p-3 bgbl rounded"><p style="font-weight: 500;">Sensitivity Published <br><b style="font-size: larger; color: #003580;">0.7458</b></p></div>
+            </div>
+            <div class="col-md-3">
+              <div class="p-3 bgbl rounded"><p style="font-weight: 500;">Sensitivity Vietnam <br><b style="font-size: larger; color: #003580;">0.9500</b></p></div>
+            </div>
+          </div>
+        </div>
+
+        <br>
+          <!-- AUC  Section -->
+        <div class="card shadow" style=" text-align: right; border: 1px solid lightgray; width: 100%;">
+          <div style="display: flex; justify-content: center; gap: 10px; align-items: center; margin-top: 10px;">
+            <img src="{{ url_for('static', filename='images/Picture1.png') }}" alt="Logo" style="width: 45%; margin-right: 0px;">
+            <img src="{{ url_for('static', filename='images/Picture2.png') }}" alt="Logo" style="width: 45%; margin-right: 0px;">
+          </div>
+          <div class="text-center mt-3">
+            <h5 class="text-left">Reciever Operator Curve Across Datasets</h5>
+            <img src="{{ url_for('static', filename='images/AUC.png') }}" alt="Logo" style="height: 400px; margin-right: 0px;">
+          </div>
+        </div>
+
+
+      </div>
+
+          
+
+
+    </div>
+  </div>
+
+  
+  <!-- Prediction + 3Dmol Script -->
+  <script>
+    document.getElementById("predictForm").addEventListener("submit", async function(e){
+      e.preventDefault();
+      let payload = {
+        ct_echdc3: document.getElementById("ct_echdc3").value,
+        ct_sort1: document.getElementById("ct_sort1").value,
+        ct_ref: document.getElementById("ct_ref").value,
+        sex: document.getElementById("sex").value,
+        age: document.getElementById("age").value
+      };
+
+      let res = await fetch("/predict", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      let data = await res.json();
+      document.getElementById("result").innerHTML =
+        `<div class="alert ${data.Prediction === 'Cancer' ? 'alert-danger' : 'alert-success'}">
+          Prediction: <b>${data.Prediction}</b><br>
+          
+        </div>`;
+    });
+
+    // Load PDB files from static/images
+    function loadPDB(viewerId, pdbFile) {
+      let element = document.getElementById(viewerId);
+      let config = { backgroundColor: "white" };
+      let viewer = $3Dmol.createViewer(element, config);
+      let pdbPath = "/static/images/" + pdbFile;
+      $.get(pdbPath, function(data) {
+        viewer.addModel(data, "pdb");
+        viewer.setStyle({}, { cartoon: { color: "spectrum" } });
+        viewer.zoomTo();
+        viewer.render();
+      });
+    }
+
+    $(document).ready(function() {
+      loadPDB("viewer_sort1", "4msl.pdb");
+      loadPDB("viewer_echdc3", "2vx2.pdb");
+    });
+  </script>
+  
+    <!-- Footer -->
+  <footer class="text-center py-3 mt-4" style="background-color: #3a3c3d; color: white;">
+    <p style="margin: 0; font-size: 14px;">
+      © 2025 Colorectal Cancer Prediction 
+    </p>
+  </footer>
+</body>
+</body>
+</html>

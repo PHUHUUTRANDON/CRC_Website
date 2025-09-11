@@ -1,0 +1,14 @@
+{
+  "feature_order": [
+    "sex",
+    "age",
+    "ECHDC3",
+    "SORT1"
+  ],
+  "sex_mapping": {
+    "Female": 0,
+    "Male": 1
+  },
+  "positive_class": 1,
+  "threshold": 0.5852328724705523
+}
