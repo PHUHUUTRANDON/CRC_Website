@@ -6,7 +6,6 @@
   <title>Colorectal Cancer Prediction</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://3Dmol.csb.pitt.edu/build/3Dmol-min.js"></script>
   <style>
     body {
       background-color: #f8f9fa;
@@ -19,7 +18,7 @@
     }
     .card {
       border-radius: 15px;
-      overflow: hidden; /* ép con theo border-radius */
+      overflow: hidden;
     }
     .btn-primary {
       background-color: #004aad;
@@ -28,31 +27,15 @@
     .btn-primary:hover {
       background-color: #003580;
     }
-    .result-box {
-      font-size: 1.1rem;
-      font-weight: bold;
-      margin-top: 15px;
-      text-align: center;
-    }
-    .viewer {
-      width: 100%;
-      height: 300px;
-      margin-bottom: 10px;
-    }
-    .bgbl{
-      background-color: #f2f9fc;
-    }
-
-    /*  Style cho dropdown cùng màu navbar */
     .navbar .dropdown-menu {
-      background-color: #002855; /* cùng màu navbar */
-      border: none;              /* bỏ viền */
+      background-color: #002855;
+      border: none;
     }
     .navbar .dropdown-menu .dropdown-item {
-      color: white;              /* chữ trắng */
+      color: white;
     }
     .navbar .dropdown-menu .dropdown-item:hover {
-      background-color: #004aad; /* xanh nhạt hơn khi hover */
+      background-color: #004aad;
       color: #fff;
     }
     .navbar .nav-link:hover {
@@ -63,86 +46,186 @@
 
 <body>
 
-   <div width="100%" align="center" style="padding: 10px; display: flex; align-items: center; justify-content: center; gap: 140px; background-color: white;">
-    <img src="{{ url_for('static', filename='images/logo_Cancer.png') }}" alt="Logo" style="height: 90px; margin-right: 0px;">
-    <p style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: 900; font-size: 200%; color: #003580;">Deep Learning Approaches for Non-invasive <br> Colorectal Cancer Prediction</p>
-    <a href="https://en.uhsvnu.edu.vn/" target="_blank"><img src="{{ url_for('static', filename='images/logo_UHS.png') }}" alt="Logo" style="height: 60px; margin-right: 0px;"></a>
+  <!-- Header -->
+  <div width="100%" align="center" style="padding: 10px; display: flex; align-items: center; justify-content: center; gap: 140px; background-color: white;">
+    <img src="{{ url_for('static', filename='images/logo_Cancer.png') }}" alt="Logo" style="height: 90px;">
+    <p id="pageTitle" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: 900; font-size: 200%; color: #003580;">
+      Deep Learning Approaches for Non-invasive <br> Colorectal Cancer Prediction
+    </p>
+    <a href="https://en.uhsvnu.edu.vn/" target="_blank">
+      <img src="{{ url_for('static', filename='images/logo_UHS.png') }}" alt="Logo" style="height: 60px;">
+    </a>
   </div>
 
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg" style="padding-top: 0px; padding-bottom: 0px;">
+    <div class="container">
+      <ul class="navbar-nav d-flex gap-5">
+        <li class="nav-item">
+          <a id="navPredict" class="nav-link" href="/index" style="font-size:20px; color:white;">Predict</a>
+        </li>
+        <li class="nav-item">
+          <a id="navOverview" class="nav-link" href="/overview" style="font-size: 20px;">CRC Overview</a>
+        </li>
+        <li class="nav-item">
+          <a id="navHow" class="nav-link" href="/howitworks" style="font-size: 20px;">How It Works</a>
+        </li>
+        <li class="nav-item">
+          <a id="navContact" class="nav-link" href="/contact" style="font-size: 20px;">Contact</a>
+        </li>
+        <li class="nav-item" style="background-color: rgb(119, 158, 212);">
+          <a id="navAbout" class="nav-link" href="/aboutus" style="font-size: 20px;">About Us</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="langDropdown" role="button"
+             data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 20px;">
+            Change Language
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="langDropdown">
+            <li><a class="dropdown-item" href="#" onclick="switchLang('en')">English</a></li>
+            <li><a class="dropdown-item" href="#" onclick="switchLang('vi')">Tiếng Việt</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
 
-!-- Navbar -->
-<nav class="navbar navbar-expand-lg">
-  <div class="container">
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" href="/index" style="font-size: 20px;">Predict</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/overview" style="font-size: 20px;">CRC Overview</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/howitworks" style="font-size: 20px;">How It Works</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/contact" style="font-size: 20px;">Contact</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/aboutus" style="font-size: 20px;">About Us</a>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="langDropdown" role="button"
-           data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 20px;">
-          Change Language
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="langDropdown">
-          <li><a class="dropdown-item" href="?lang=en">English</a></li>
-          <li><a class="dropdown-item" href="?lang=vi">Tiếng Việt</a></li>
-        </ul>
-      </li>
-    </ul>
+  <!-- About Us -->
+  <div class="container content-section py-4">
+    <h2 id="aboutTitle">About Us</h2>
+    <p id="aboutText">
+      Our team is dedicated to leveraging deep learning techniques to provide non-invasive colorectal cancer (CRC) prediction tools. We are a multidisciplinary group of researchers, clinicians, and data scientists committed to improving patient outcomes through innovative technology.
+    </p>
   </div>
-</nav>
 
-
-<!-- Bootstrap Bundle JS (cần cho dropdown hoạt động) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- Content -->
-<div class="container content-section">
-  <h2>About Us</h2>
-  <p>
-    Our team is dedicated to leveraging deep learning techniques to provide non-invasive colorectal cancer (CRC) prediction tools. We are a multidisciplinary group of researchers, clinicians, and data scientists committed to improving patient outcomes through innovative technology.
-</div>
-<div class="container my-4">
-  <div class="row justify-content-center">
-    <div class="col-md-4 mb-3">
-      <img src="{{ url_for('static', filename='images/hinh1.jpg') }}" class="img-fluid rounded shadow" alt="Image 1">
-    </div>
-    <div class="col-md-4 mb-3">
-      <img src="{{ url_for('static', filename='images/hinh2.jpg') }}" class="img-fluid rounded shadow" alt="Image 2">
-    </div>
-    <div class="col-md-4 mb-3">
-      <img src="{{ url_for('static', filename='images/hinh3.jpg') }}" class="img-fluid rounded shadow" alt="Image 3">
-    </div>
-  </div>
-</div>
-<div class="container my-4">
-  <div class="row justify-content-center">
-    <div class="col-md-6 mb-3">
-      <img src="{{ url_for('static', filename='images/hinh4.jpg') }}" class="img-fluid rounded shadow" alt="Image 4">
-    </div>
-    <div class="col-md-6 mb-3">
-      <img src="{{ url_for('static', filename='images/hinh5.jpg') }}" class="img-fluid rounded shadow" alt="Image 5">
+  <!-- Images -->
+  <div class="container my-4">
+    <div class="row justify-content-center">
+      <div class="col-md-4 mb-3">
+        <img src="{{ url_for('static', filename='images/hinh1.jpg') }}" class="img-fluid rounded shadow" alt="Image 1">
+      </div>
+      <div class="col-md-4 mb-3">
+        <img src="{{ url_for('static', filename='images/hinh2.jpg') }}" class="img-fluid rounded shadow" alt="Image 2">
+      </div>
+      <div class="col-md-4 mb-3">
+        <img src="{{ url_for('static', filename='images/hinh3.jpg') }}" class="img-fluid rounded shadow" alt="Image 3">
+      </div>
     </div>
   </div>
-</div>
-<!-- Footer -->
-<footer class="text-center py-3 mt-4" style="background-color: #3a3c3d; color: white;">
-  <p style="margin: 0; font-size: 14px;">
-    © 2025 Colorectal Cancer Prediction
-  </p>
-</footer>
+  <div class="container my-4">
+    <div class="row justify-content-center">
+      <div class="col-md-6 mb-3">
+        <img src="{{ url_for('static', filename='images/hinh4.jpg') }}" class="img-fluid rounded shadow" alt="Image 4">
+      </div>
+      <div class="col-md-6 mb-3">
+        <img src="{{ url_for('static', filename='images/hinh5.jpg') }}" class="img-fluid rounded shadow" alt="Image 5">
+      </div>
+    </div>
+  </div>
 
+  <!-- Contact -->
+  <div class="container content-section py-4">
+    <h2 id="contactTitle">Contact</h2>
+    <p id="contactDescription">
+      If you have any questions, please contact us at: <br>
+      <a href="mailto:nmnam@medvnu.edu.vn">nmnam@medvnu.edu.vn</a>
+    </p>
+  </div>
 
+  <!-- Footer -->
+  <footer class="text-center py-3 mt-4" style="background-color: #3a3c3d; color: white;">
+    <p id="footerText" style="margin: 0; font-size: 14px;">
+      © 2025 Colorectal Cancer Prediction
+    </p>
+  </footer>
+
+  <!-- Bootstrap Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Translation Script -->
+  <script>
+    const translations = {
+      en: {
+        pageTitle: "Deep Learning Approaches for Non-invasive <br> Colorectal Cancer Prediction",
+        navPredict: "Predict",
+        navOverview: "CRC Overview",
+        navHow: "How It Works",
+        navContact: "Contact",
+        navAbout: "About Us",
+        navLang: "Change Language",
+        aboutTitle: "About Us",
+        aboutText: "Our team is dedicated to leveraging deep learning techniques to provide non-invasive colorectal cancer (CRC) prediction tools. We are a multidisciplinary group of researchers, clinicians, and data scientists committed to improving patient outcomes through innovative technology.",
+        contactTitle: "Contact",
+        contactDescription: "If you have any questions, please contact us at: <br><a href='mailto:nmnam@medvnu.edu.vn'>nmnam@medvnu.edu.vn</a>",
+        footerText: "© 2025 Colorectal Cancer Prediction"
+      },
+      vi: {
+        pageTitle: "Ứng dụng Học Sâu trong Dự đoán <br> Ung thư Đại trực tràng Không xâm lấn",
+        navPredict: "Dự đoán",
+        navOverview: "Tổng quan CRC",
+        navHow: "Cách hoạt động",
+        navContact: "Liên hệ",
+        navAbout: "Về chúng tôi",
+        navLang: "Chọn ngôn ngữ",
+        aboutTitle: "Về chúng tôi",
+        aboutText: "Nhóm nghiên cứu của chúng tôi tập trung ứng dụng các phương pháp học sâu để phát triển công cụ dự đoán ung thư đại trực tràng (CRC) không xâm lấn. Chúng tôi là tập thể liên ngành gồm các nhà khoa học, bác sĩ lâm sàng và chuyên gia dữ liệu với mục tiêu cải thiện sức khỏe bệnh nhân thông qua công nghệ đổi mới.",
+        contactTitle: "Liên hệ",
+        contactDescription: "Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ với chúng tôi qua: <br><a href='mailto:nmnam@medvnu.edu.vn'>nmnam@medvnu.edu.vn</a>",
+        footerText: "© 2025 Dự đoán Ung thư Đại trực tràng"
+      }
+    };
+
+    function switchLang(lang, push = true) {
+      document.getElementById("pageTitle").innerHTML = translations[lang].pageTitle;
+      document.getElementById("navPredict").textContent = translations[lang].navPredict;
+      document.getElementById("navOverview").textContent = translations[lang].navOverview;
+      document.getElementById("navHow").textContent = translations[lang].navHow;
+      document.getElementById("navContact").textContent = translations[lang].navContact;
+      document.getElementById("navAbout").textContent = translations[lang].navAbout;
+      document.getElementById("langDropdown").textContent = translations[lang].navLang;
+      document.getElementById("aboutTitle").textContent = translations[lang].aboutTitle;
+      document.getElementById("aboutText").textContent = translations[lang].aboutText;
+      document.getElementById("contactTitle").textContent = translations[lang].contactTitle;
+      document.getElementById("contactDescription").innerHTML = translations[lang].contactDescription;
+      document.getElementById("footerText").textContent = translations[lang].footerText;
+
+      document.documentElement.lang = lang;
+      if (push) {
+        window.history.replaceState({}, '', `?lang=${lang}`);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlLang = new URLSearchParams(window.location.search).get('lang');
+      if (urlLang === 'vi') {
+        switchLang('vi', false);
+      } else {
+        switchLang('en', false);
+      }
+
+      function updateNavLinksByLang() {
+        const isVi = document.documentElement.lang === 'vi';
+        document.querySelectorAll('a.nav-link').forEach(a => {
+          const href = a.getAttribute('href');
+          if (!href || href.startsWith('#') || href.startsWith('http')) return;
+          const url = new URL(href, location.origin);
+          if (isVi) {
+            url.searchParams.set('lang', 'vi');
+          } else {
+            url.searchParams.delete('lang');
+          }
+          a.setAttribute('href', url.pathname + url.search);
+        });
+      }
+
+      const origSwitchLang = window.switchLang;
+      window.switchLang = function(lang, push = true) {
+        origSwitchLang(lang, push);
+        updateNavLinksByLang();
+      };
+
+      updateNavLinksByLang();
+    });
+  </script>
 </body>
 </html>
