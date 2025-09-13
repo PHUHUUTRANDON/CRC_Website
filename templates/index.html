@@ -19,7 +19,7 @@
     }
     .card {
       border-radius: 15px;
-      overflow: hidden; /* ép con theo border-radius */
+      overflow: hidden;
     }
     .btn-primary {
       background-color: #004aad;
@@ -39,20 +39,18 @@
       height: 300px;
       margin-bottom: 10px;
     }
-    .bgbl{
+    .bgbl {
       background-color: #f2f9fc;
     }
-
-    /*  Style cho dropdown cùng màu navbar */
     .navbar .dropdown-menu {
-      background-color: #002855; /* cùng màu navbar */
-      border: none;              /* bỏ viền */
+      background-color: #002855;
+      border: none;
     }
     .navbar .dropdown-menu .dropdown-item {
-      color: white;            /* chữ trắng */
+      color: white;
     }
     .navbar .dropdown-menu .dropdown-item:hover {
-      background-color: #004aad; /* xanh nhạt hơn khi hover */
+      background-color: #004aad;
       color: #fff;
     }
     .navbar .nav-link:hover {
@@ -62,50 +60,46 @@
 </head>
 
 <body>
-
   <div width="100%" align="center" style="padding: 10px; display: flex; align-items: center; justify-content: center; gap: 140px; background-color: white;">
     <img src="{{ url_for('static', filename='images/logo_Cancer.png') }}" alt="Logo" style="height: 90px; margin-right: 0px;">
-    <p style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: 900; font-size: 200%; color: #003580;">Deep Learning Approaches for Non-invasive <br> Colorectal Cancer Prediction</p>
+    <p id="title" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: 900; font-size: 200%; color: #003580;">Deep Learning Approaches for Non-invasive <br> Colorectal Cancer Prediction</p>
     <a href="https://en.uhsvnu.edu.vn/" target="_blank"><img src="{{ url_for('static', filename='images/logo_UHS.png') }}" alt="Logo" style="height: 60px; margin-right: 0px;"></a>
   </div>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg">
-  <div class="container">
-    <ul class="navbar-nav d-flex gap-5">
-      <li class="nav-item" d>
-       <a class="nav-link" href="/index" style="font-size: 20px; background-color: #7cacdf; color: white; padding: 5px 14px;">Predict</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/overview" style="font-size: 20px;">CRC Overview</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/howitworks" style="font-size: 20px;">How It Works</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/contact" style="font-size: 20px;">Contact</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/aboutus" style="font-size: 20px;">About Us</a>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="langDropdown" role="button"
-           data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 20px;">
-          Change Language
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="langDropdown">
-          <li><a class="dropdown-item" href="?lang=en">English</a></li>
-          <li><a class="dropdown-item" href="?lang=vi">Tiếng Việt</a></li>
-        </ul>
-      </li>
-    </ul>
-  </div>
-</nav>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg" style="padding-top: 0px; padding-bottom: 0px;">
+    <div class="container">
+      <ul class="navbar-nav d-flex gap-5">
+        <li class="nav-item" style="background-color: rgb(119, 158, 212);">
+          <a class="nav-link" href="/index" id="navPredict" style="font-size:20px; color:white;">Predict</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/overview" id="navOverview" style="font-size: 20px;">CRC Overview</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/howitworks" id="navHowItWorks" style="font-size: 20px;">How It Works</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/contact" id="navContact" style="font-size: 20px;">Contact</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/aboutus" id="navAboutUs" style="font-size: 20px;">About Us</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="langDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 20px;">
+            Change Language
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#" onclick="switchLang('en')">English</a></li>
+            <li><a class="dropdown-item" href="#" onclick="switchLang('vi')">Tiếng Việt</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
 
-
-<!-- Bootstrap Bundle JS (cần cho dropdown hoạt động) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
+  <!-- Bootstrap Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <!-- Content -->
   <div class="container mt-4">
@@ -114,64 +108,59 @@
       <div class="col-md-4">
         <div class="card shadow p-3 mb-4">
           <img src="{{ url_for('static', filename='images/CRC.png') }}" class="img-fluid rounded mb-3" alt="CRC">
-          <h5 class="text-center" style="font-size: 30px;">CRC Prediction</h5>
+          <h5 id="formTitle" class="text-center" style="font-size: 30px;">CRC Prediction</h5>
           <form id="predictForm">
             <div class="mb-3">
-              <label style="font-weight: bold;" class="form-label">CT ECHDC3</label>
+              <label id="lblEchdc3" style="font-weight: bold;" class="form-label">CT ECHDC3</label>
               <input type="number" step="0.01" class="form-control" id="ct_echdc3" required>
             </div>
             <div class="mb-3">
-              <label style="font-weight: bold;" class="form-label">CT SORT1</label>
+              <label id="lblSort1" style="font-weight: bold;" class="form-label">CT SORT1</label>
               <input type="number" step="0.01" class="form-control" id="ct_sort1" required>
             </div>
             <div class="mb-3">
-              <label style="font-weight: bold;" class="form-label">CT GAPDH (Reference)</label>
+              <label id="lblRef" style="font-weight: bold;" class="form-label">CT GAPDH (Reference)</label>
               <input type="number" step="0.01" class="form-control" id="ct_ref" required>
             </div>
             <div class="mb-3">
-              <label style="font-weight: bold;" class="form-label">Sex</label>
+              <label id="lblSex" style="font-weight: bold;" class="form-label">Sex</label>
               <select class="form-select" id="sex" required>
                 <option value="">Select...</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
+                <option id="sexMale" value="Male">Male</option>
+                <option id="sexFemale" value="Female">Female</option>
               </select>
             </div>
             <div class="mb-3">
-              <label style="font-weight: bold;" class="form-label">Age</label>
+              <label id="lblAge" style="font-weight: bold;" class="form-label">Age</label>
               <input type="number" class="form-control" id="age" required>
             </div>
-            <button type="submit" class="btn btn-primary w-100" style="font-size: 20px; font-weight: 500;">Predict</button>
+            <button id="btnPredict" type="submit" class="btn btn-primary w-100" style="font-size: 20px; font-weight: 500;">Predict</button>
           </form>
           <div id="result" class="result-box"></div>
-          <p style="color: gray; font-size: 15px;">We advise patients to use this tool in collaboration with their doctors. This tool only serves as reference and does not replace profesional medical advice.</p>
+          <p id="disclaimer" style="color: gray; font-size: 15px;">We advise patients to use this tool in collaboration with their doctors. This tool only serves as reference and does not replace professional medical advice.</p>
         </div>
       </div>
 
       <!-- Right content -->
       <div class="col-md-8">
         <div class="card shadow p-3 mb-4">
-          <h5>Protein 3D Structures of Potential Genes</h5>
+          <h5 id="proteinTitle">Protein 3D Structures of Potential Genes</h5>
           <div class="row">
             <div class="col-md-6">
-              <p style="font-size: 14px;">This gene encodes a member of the VPS10-related sortilin family of proteins. The encoded preproprotein is proteolytically processed by furin to generate the mature receptor.</p>
+              <p id="sort1Description" style="font-size: 14px;">This gene encodes a member of the VPS10-related sortilin family of proteins. The encoded preproprotein is proteolytically processed by furin to generate the mature receptor.</p>
               <h6>SORT1 (PDB ID: 4MSL)</h6>
               <div class="card p-2 mb-3">
-                <!-- <h6>SORT1 (PDB ID: 4MSL)</h6> -->
                 <div id="viewer_sort1" class="viewer"></div>
-                <p>Andersen, Jacob Lauwring et al. "Identification of the first small-molecule ligand of the neuronal 
-                  receptor sortilin and structure determination of the receptor-ligand complex." Acta Crystallographica 
-                  Section D: Biological Crystallography, vol. 70, pt. 2 (2014): 451–460. <a href="#">DOI: 10.1107/S1399004713030149.</a><br> Licensed under CC BY-4.0</p>
+                <p>Andersen, Jacob Lauwring et al. "Identification of the first small-molecule ligand of the neuronal receptor sortilin and structure determination of the receptor-ligand complex." Acta Crystallographica Section D: Biological Crystallography, vol. 70, pt. 2 (2014): 451–460. <a href="#">DOI: 10.1107/S1399004713030149.</a><br> Licensed under CC BY-4.0</p>
               </div>
             </div>
             <div class="col-md-6">
-              <p style="font-size: 14px;">Predicted to enable enoyl-CoA hydratase activity. Involved in positive regulation of cellular response to insulin stimulus. Located in mitochondrion.</p>
+              <p id="echdc3Description" style="font-size: 14px;">Predicted to enable enoyl-CoA hydratase activity. Involved in positive regulation of cellular response to insulin stimulus. Located in mitochondrion.</p>
               <h6>ECHDC3 (PDB ID: 2VX2)</h6>
               <div class="card p-2 mb-3">
-                <!-- <h6>ECHDC3 (PDB ID: 2VX2)</h6> -->
                 <div id="viewer_echdc3" class="viewer"></div>
-                <p>Yue WW, Guo K, Kothap P, et al. Crystal structure of human enoyl Coenzyme A hydratase containing protein 3 (ECHDC3). 
-                  Protein Data Bank. Published October 1, 2008. Accessed August 30, 2025. <a href="#">DOI: 10.2210/pdb2vx2/pdb.</a><br> Licensed under CC BY-4.0</p>
-                  <br>
+                <p>Yue WW, Guo K, Kothap P, et al. Crystal structure of human enoyl Coenzyme A hydratase containing protein 3 (ECHDC3). Protein Data Bank. Published October 1, 2008. Accessed August 30, 2025. <a href="#">DOI: 10.2210/pdb2vx2/pdb.</a><br> Licensed under CC BY-4.0</p>
+                <br>
               </div>
             </div>
           </div>
@@ -179,7 +168,7 @@
 
         <!-- Model Performance -->
         <div class="card shadow p-3">
-          <h5 class="text-left">Model Performance Assessing by AUC and Sensitivity Using Deep Learing Model</h5>
+          <h5 id="modelPerformanceTitle" class="text-left">Model Performance Assessing by AUC and Sensitivity Using Deep Learning Model</h5>
           <div class="row text-center">
             <div class="col-md-3">
               <div class="p-3 bgbl rounded"><p style="font-weight: 500;">AUC Published Data <br><b style="font-size: larger; color: #003580;">0.8294</b></p></div>
@@ -197,28 +186,20 @@
         </div>
 
         <br>
-          <!-- AUC  Section -->
-        <div class="card shadow" style=" text-align: right; border: 1px solid lightgray; width: 100%;">
+        <div class="card shadow" style="text-align: right; border: 1px solid lightgray; width: 100%;">
           <div style="display: flex; justify-content: center; gap: 10px; align-items: center; margin-top: 10px;">
             <img src="{{ url_for('static', filename='images/Picture1.png') }}" alt="Logo" style="width: 45%; margin-right: 0px;">
             <img src="{{ url_for('static', filename='images/Picture2.png') }}" alt="Logo" style="width: 45%; margin-right: 0px;">
           </div>
           <div class="text-center mt-3">
-            <h5 class="text-left">Reciever Operator Curve Across Datasets</h5>
+            <h5 id="rocTitle" class="text-left">Receiver Operator Curve Across Datasets</h5>
             <img src="{{ url_for('static', filename='images/AUC.png') }}" alt="Logo" style="height: 400px; margin-right: 0px;">
           </div>
         </div>
-
-
       </div>
-
-          
-
-
     </div>
   </div>
 
-  
   <!-- Prediction + 3Dmol Script -->
   <script>
     document.getElementById("predictForm").addEventListener("submit", async function(e){
@@ -240,7 +221,6 @@
       document.getElementById("result").innerHTML =
         `<div class="alert ${data.Prediction === 'Cancer' ? 'alert-danger' : 'alert-success'}">
           Prediction: <b>${data.Prediction}</b><br>
-          
         </div>`;
     });
 
@@ -262,14 +242,136 @@
       loadPDB("viewer_sort1", "4msl.pdb");
       loadPDB("viewer_echdc3", "2vx2.pdb");
     });
+
+    // Language Switching Logic
+    const translations = {
+      en: {
+        title: "Deep Learning Approaches for Non-invasive <br> Colorectal Cancer Prediction",
+        predict: "Predict",
+        overview: "CRC Overview",
+        howitworks: "How It Works",
+        contact: "Contact",
+        aboutus: "About Us",
+        changelang: "Change Language",
+        formTitle: "CRC Prediction",
+        lblEchdc3: "CT ECHDC3",
+        lblSort1: "CT SORT1",
+        lblRef: "CT GAPDH (Reference)",
+        lblSex: "Sex",
+        sexMale: "Male",
+        sexFemale: "Female",
+        lblAge: "Age",
+        btnPredict: "Predict",
+        disclaimer: "We advise patients to use this tool in collaboration with their doctors. This tool only serves as reference and does not replace professional medical advice.",
+        proteinTitle: "Protein 3D Structures of Potential Genes",
+        sort1Description: "This gene encodes a member of the VPS10-related sortilin family of proteins. The encoded preproprotein is proteolytically processed by furin to generate the mature receptor.",
+        echdc3Description: "Predicted to enable enoyl-CoA hydratase activity. Involved in positive regulation of cellular response to insulin stimulus. Located in mitochondrion.",
+        modelPerformanceTitle: "Model Performance Assessing by AUC and Sensitivity Using Deep Learning Model",
+        rocTitle: "Receiver Operator Curve Across Datasets"
+      },
+      vi: {
+        title: "Ứng dụng Mô hình Học sâu trong Dự đoán <br> Ung thư Đại Trực Tràng Không Xâm Lấn",
+        predict: "Dự đoán",
+        overview: "Tổng quan CRC",
+        howitworks: "Cách hoạt động",
+        contact: "Liên hệ",
+        aboutus: "Về chúng tôi",
+        changelang: "Chọn ngôn ngữ",
+        formTitle: "Dự đoán CRC",
+        lblEchdc3: "CT ECHDC3",
+        lblSort1: "CT SORT1",
+        lblRef: "CT GAPDH (Tham chiếu)",
+        lblSex: "Giới tính",
+        sexMale: "Nam",
+        sexFemale: "Nữ",
+        lblAge: "Tuổi",
+        btnPredict: "Dự đoán",
+        disclaimer: "Chúng tôi khuyến cáo bệnh nhân nên sử dụng công cụ này cùng với bác sĩ của mình. Công cụ chỉ mang tính tham khảo và không thay thế cho tư vấn y tế chuyên nghiệp.",
+        proteinTitle: "Cấu trúc 3D của Protein từ các Gen tiềm năng",
+        sort1Description: "Gen này mã hóa một thành viên của họ protein sortilin liên quan đến VPS10. Protein tiền thân được mã hóa sẽ được xử lý proteolytically bởi furin để tạo ra thụ thể trưởng thành.",
+        echdc3Description: "Dự đoán có khả năng kích hoạt hoạt động enoyl-CoA hydratase. Tham gia vào điều hòa tích cực phản ứng tế bào với kích thích insulin. Được tìm thấy ở ty thể.",
+        modelPerformanceTitle: "Hiệu suất Mô hình Đánh giá bằng AUC và Độ Nhạy Sử dụng Mô hình Học Sâu",
+        rocTitle: "Đường Cong ROC trên Các Tập Dữ Liệu"
+      }
+    };
+
+    function switchLang(lang) {
+      document.getElementById("title").innerHTML = translations[lang].title; // Use innerHTML to preserve <br>
+      document.getElementById("navPredict").textContent = translations[lang].predict;
+      document.getElementById("navOverview").textContent = translations[lang].overview;
+      document.getElementById("navHowItWorks").textContent = translations[lang].howitworks;
+      document.getElementById("navContact").textContent = translations[lang].contact;
+      document.getElementById("navAboutUs").textContent = translations[lang].aboutus;
+      document.getElementById("langDropdown").textContent = translations[lang].changelang;
+
+      document.getElementById("formTitle").textContent = translations[lang].formTitle;
+      document.getElementById("lblEchdc3").textContent = translations[lang].lblEchdc3;
+      document.getElementById("lblSort1").textContent = translations[lang].lblSort1;
+      document.getElementById("lblRef").textContent = translations[lang].lblRef;
+      document.getElementById("lblSex").textContent = translations[lang].lblSex;
+      document.getElementById("sexMale").textContent = translations[lang].sexMale;
+      document.getElementById("sexFemale").textContent = translations[lang].sexFemale;
+      document.getElementById("lblAge").textContent = translations[lang].lblAge;
+      document.getElementById("btnPredict").textContent = translations[lang].btnPredict;
+      document.getElementById("disclaimer").textContent = translations[lang].disclaimer;
+
+      document.getElementById("proteinTitle").textContent = translations[lang].proteinTitle;
+      document.getElementById("sort1Description").textContent = translations[lang].sort1Description;
+      document.getElementById("echdc3Description").textContent = translations[lang].echdc3Description;
+      document.getElementById("modelPerformanceTitle").textContent = translations[lang].modelPerformanceTitle;
+      document.getElementById("rocTitle").textContent = translations[lang].rocTitle;
+    }
+
+
+
+
+
+
+
+
+
+
+// ====================================================================================================
+    document.addEventListener('DOMContentLoaded', () => {
+  const urlLang = new URLSearchParams(window.location.search).get('lang');
+  if (urlLang === 'vi') {
+    switchLang('vi', false); 
+  }
+  function updateNavLinksByLang() {
+    const isVi = document.getElementById("navPredict")?.textContent.trim() === 'Dự đoán';
+    document.querySelectorAll('a.nav-link').forEach(a => {
+      const href = a.getAttribute('href');
+      if (!href || href.startsWith('#') || href.startsWith('http')) return;
+      const url = new URL(href, location.origin);
+      if (isVi) {
+        url.searchParams.set('lang', 'vi');
+      } else {
+        url.searchParams.delete('lang');
+      }
+      a.setAttribute('href', url.pathname + url.search);
+    });
+  }
+  const origSwitchLang = window.switchLang;
+  window.switchLang = function(lang, push = true) {
+    origSwitchLang(lang, push);
+    updateNavLinksByLang();
+  };
+  updateNavLinksByLang();
+});
+// ====================================================================================================
+
+
+
   </script>
-  
-    <!-- Footer -->
-  <footer class="text-center py-3 mt-4" style="background-color: #3a3c3d; color: white;">
-    <p style="margin: 0; font-size: 14px;">
-      © 2025 Colorectal Cancer Prediction 
-    </p>
+
+  <!-- Footer -->
+  <footer>
+    <div style="width: 100%; height: 100px; background-color: #002855; padding: 0px"></div>
+    <div class="text-center py-3" style="background-color: #3a3c3d; color: white;">
+      <p style="margin: 0; font-size: 14px;">
+        © 2025 Colorectal Cancer Prediction
+      </p>
+    </div>
   </footer>
-</body>
 </body>
 </html>
