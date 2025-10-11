@@ -98,8 +98,8 @@
             Change Language
           </a>
           <ul class="dropdown-menu" aria-labelledby="langDropdown">
-            <li><a class="dropdown-item" href="?lang=en">English</a></li>
-            <li><a class="dropdown-item" href="?lang=vi">Tiếng Việt</a></li>
+            <li><a class="dropdown-item" href="#" data-lang="en">English</a></li>
+            <li><a class="dropdown-item" href="#" data-lang="vi">Tiếng Việt</a></li>
           </ul>
         </li>
       </ul>
@@ -111,10 +111,16 @@
 
   <!-- Content -->
   <div class="container content-section">
-    <h2 id="section1"></h2>
-    <p id="desc1"></p>
-    <p id="desc2"></p>
-    <p id="desc3"></p>
+    <h2 id="section1">How Deep Learning Works for CRC Prediction</h2>
+    <p id="desc1">
+      Deep learning is a branch of machine learning that mimics how the human brain processes information. It uses artificial neural networks with multiple layers to learn from large datasets. In the context of colorectal cancer (CRC) prediction, deep learning models can analyze complex patterns in gene expression data to identify risk factors and predict disease outcomes. By training on diverse datasets, these models can improve accuracy and assist clinicians in making informed decisions.
+    </p>
+    <p id="desc2">
+      Advances in deep learning and predictive modeling now allow for non-invasive tools to estimate CRC risk and guide clinical decisions. Our tool integrates patient data to provide personalized predictions, helping clinicians and patients make informed choices.
+    </p>
+    <p id="desc3">
+      The model is designed using a Multi-Layer Neural Network (MLP) architecture using Scikit Learn Library. The model is trained on published datasets and validated on both published datasets and Vietnamese datasets.
+    </p>
     <h2 id="section2"></h2>
     <h2 id="section3"></h2>
   </div>
@@ -131,14 +137,9 @@
 
   <!-- Script -->
   <script>
-    function getParameterByName(name) {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(name);
-    }
+    let currentLang = 'en'; // Default language
 
-    let currentLang = getParameterByName('lang') || 'en';
-    if (currentLang !== 'en' && currentLang !== 'vi') currentLang = 'en';
-
+    // Language translations
     const translations = {
       en: {
         mainTitle: "Deep Learning Approaches for Non-invasive <br> Colorectal Cancer Prediction",
@@ -148,11 +149,12 @@
         navContact: "Contact",
         navAboutUs: "About Us",
         langDropdown: "Change Language",
-       
+        section1: "How Deep Learning Works for CRC Prediction",
         desc1: "Deep learning is a branch of machine learning that mimics how the human brain processes information. It uses artificial neural networks with multiple layers to learn from large datasets. In the context of colorectal cancer (CRC) prediction, deep learning models can analyze complex patterns in gene expression data to identify risk factors and predict disease outcomes. By training on diverse datasets, these models can improve accuracy and assist clinicians in making informed decisions.",
         desc2: "Advances in deep learning and predictive modeling now allow for non-invasive tools to estimate CRC risk and guide clinical decisions. Our tool integrates patient data to provide personalized predictions, helping clinicians and patients make informed choices.",
-        desc3: "The model is designed using a Multi-Layer Neural Network (MLP) architecture using Scikit Learn Library. The model is trained on a published datasets and validated on both published datasets and Vietnamese datasets.",
-   
+        desc3: "The model is designed using a Multi-Layer Neural Network (MLP) architecture using Scikit Learn Library. The model is trained on published datasets and validated on both published datasets and Vietnamese datasets.",
+        section2: "", // Placeholder for additional section
+        section3: "", // Placeholder for additional section
         footerText: "© 2025 Colorectal Cancer Prediction"
       },
       vi: {
@@ -163,68 +165,85 @@
         navContact: "Liên hệ",
         navAboutUs: "Về chúng tôi",
         langDropdown: "Chọn ngôn ngữ",
-        
-        desc1: "Học sâu là một nhánh của học máy trong đó thuật toán sẽ mô phỏng cách bộ não con người xử lý thông tin. Các mạng nơ-ron nhân tạo được thiết kế với nhiều lớp để học từ các tập dữ liệu lớn. Trong lĩnh vực dự đoán ung thư đại trực tràng, các mô hình deep learning có thể phân tích các mẫu phức tạp trong dữ liệu biểu hiện gen nhằm xác định các yếu tố nguy cơ và dự đoán tiến triển bệnh. Bằng cách huấn luyện trên nhiều tập dữ liệu đa dạng, các mô hình này có thể nâng cao độ chính xác và hỗ trợ bác sĩ đưa ra quyết định lâm sàng chính xác hơn.",
-        desc2: "Những tiến bộ trong lĩnh vực deep learning và mô hình dự đoán hiện nay cho phép phát triển các công cụ không xâm lấn để ước tính nguy cơ mắc ung thư đại trực tràng và hỗ trợ quyết định lâm sàng. Công cụ của chúng tôi tích hợp dữ liệu bệnh nhân để đưa ra các dự đoán cá nhân hóa, giúp bác sĩ và người bệnh đưa ra lựa chọn chính xác và phù hợp.",
+        section1: "Cách Học Sâu Hoạt Động trong Dự Đoán CRC",
+        desc1: "Học sâu là một nhánh của học máy trong đó thuật toán sẽ mô phỏng cách bộ não con người xử lý thông tin. Các mạng nơ-ron nhân tạo được thiết kế với nhiều lớp để học từ các tập dữ liệu lớn. Trong lĩnh vực dự đoán ung thư đại trực tràng, các mô hình học sâu có thể phân tích các mẫu phức tạp trong dữ liệu biểu hiện gen nhằm xác định các yếu tố nguy cơ và dự đoán tiến triển bệnh. Bằng cách huấn luyện trên nhiều tập dữ liệu đa dạng, các mô hình này có thể nâng cao độ chính xác và hỗ trợ bác sĩ đưa ra quyết định lâm sàng chính xác hơn.",
+        desc2: "Những tiến bộ trong lĩnh vực học sâu và mô hình dự đoán hiện nay cho phép phát triển các công cụ không xâm lấn để ước tính nguy cơ mắc ung thư đại trực tràng và hỗ trợ quyết định lâm sàng. Công cụ của chúng tôi tích hợp dữ liệu bệnh nhân để đưa ra các dự đoán cá nhân hóa, giúp bác sĩ và người bệnh đưa ra lựa chọn chính xác và phù hợp.",
         desc3: "Mô hình được thiết kế dựa trên kiến trúc Mạng Nơ-ron Đa lớp (MLP) sử dụng thư viện Scikit-learn. Mô hình được huấn luyện trên các tập dữ liệu đã công bố và được kiểm chứng trên cả dữ liệu đã công bố lẫn dữ liệu từ Việt Nam.",
-    
+        section2: "", // Placeholder for additional section
+        section3: "", // Placeholder for additional section
         footerText: "© 2025 Dự đoán Ung thư Đại Trực Tràng"
       }
     };
 
+    // Function to switch language
     function switchLang(lang) {
-      currentLang = lang;
-      document.getElementById("mainTitle").innerHTML = translations[lang].mainTitle;
-      document.getElementById("navPredict").textContent = translations[lang].navPredict;
-      document.getElementById("navOverview").textContent = translations[lang].navOverview;
-      document.getElementById("navHowItWorks").textContent = translations[lang].navHowItWorks;
-      document.getElementById("navContact").textContent = translations[lang].navContact;
-      document.getElementById("navAboutUs").textContent = translations[lang].navAboutUs;
-      document.getElementById("langDropdown").textContent = translations[lang].langDropdown;
+      try {
+        if (!translations[lang]) throw new Error(`Invalid language: ${lang}`);
+        currentLang = lang;
+        console.log('Switching to language:', lang); // Debug
+        document.getElementById("mainTitle").innerHTML = translations[lang].mainTitle;
+        document.getElementById("navPredict").textContent = translations[lang].navPredict;
+        document.getElementById("navOverview").textContent = translations[lang].navOverview;
+        document.getElementById("navHowItWorks").textContent = translations[lang].navHowItWorks;
+        document.getElementById("navContact").textContent = translations[lang].navContact;
+        document.getElementById("navAboutUs").textContent = translations[lang].navAboutUs;
+        document.getElementById("langDropdown").textContent = translations[lang].langDropdown;
+        document.getElementById("section1").textContent = translations[lang].section1;
+        document.getElementById("desc1").textContent = translations[lang].desc1;
+        document.getElementById("desc2").textContent = translations[lang].desc2;
+        document.getElementById("desc3").textContent = translations[lang].desc3;
+        document.getElementById("section2").textContent = translations[lang].section2;
+        document.getElementById("section3").textContent = translations[lang].section3;
+        document.getElementById("footerText").textContent = translations[lang].footerText;
 
-      document.getElementById("section1").textContent = translations[lang].section1;
-      document.getElementById("desc1").textContent = translations[lang].desc1;
-      document.getElementById("desc2").textContent = translations[lang].desc2;
-      document.getElementById("desc3").textContent = translations[lang].desc3;
-      document.getElementById("section2").textContent = translations[lang].section2;
-      document.getElementById("section3").textContent = translations[lang].section3;
-      document.getElementById("footerText").textContent = translations[lang].footerText;
-
-      window.history.pushState({}, '', `?lang=${lang}`);
-      updateNavLinksByLang();
+        document.documentElement.lang = lang;
+        window.history.pushState({}, '', `?lang=${lang}`);
+        updateNavLinksByLang();
+      } catch (error) {
+        console.error('Error in switchLang:', error);
+      }
     }
 
+    // Update navigation links
+    function updateNavLinksByLang() {
+      const isVi = currentLang === 'vi';
+      console.log('Is Vietnamese:', isVi); // Debug
+      document.querySelectorAll('a.nav-link').forEach(a => {
+        const href = a.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('http')) return;
+        const url = new URL(href, location.origin);
+        if (isVi) {
+          url.searchParams.set('lang', 'vi');
+        } else {
+          url.searchParams.delete('lang');
+        }
+        a.setAttribute('href', url.pathname + url.search);
+        console.log('Updated link:', href, 'to', a.getAttribute('href')); // Debug
+      });
+    }
+
+    // Initialize on page load
     document.addEventListener('DOMContentLoaded', () => {
-      // Set initial language based on URL parameter
-      const urlLang = getParameterByName('lang');
+      // Set initial language
+      const urlLang = new URLSearchParams(window.location.search).get('lang');
+      console.log('Detected lang:', urlLang); // Debug
       if (urlLang === 'vi') {
+        currentLang = 'vi';
         switchLang('vi');
       } else {
+        currentLang = 'en';
         switchLang('en');
       }
 
-      // Update nav links based on current language
-      function updateNavLinksByLang() {
-        const isVi = document.getElementById("navPredict").textContent.trim() === 'Dự đoán';
-        document.querySelectorAll('a.nav-link').forEach(a => {
-          const href = a.getAttribute('href');
-          if (!href || href.startsWith('#') || href.startsWith('http')) return;
-          const url = new URL(href, location.origin);
-          if (isVi) {
-            url.searchParams.set('lang', 'vi');
-          } else {
-            url.searchParams.delete('lang');
-          }
-          a.setAttribute('href', url.pathname + url.search);
+      // Handle dropdown clicks
+      document.querySelectorAll('.dropdown-item').forEach(item => {
+        item.addEventListener('click', function(e) {
+          e.preventDefault();
+          const lang = this.getAttribute('data-lang');
+          console.log('Dropdown selected lang:', lang); // Debug
+          switchLang(lang);
         });
-      }
-
-      // Override switchLang to update nav links
-      const origSwitchLang = window.switchLang;
-      window.switchLang = function(lang) {
-        origSwitchLang(lang);
-        updateNavLinksByLang();
-      };
+      });
 
       updateNavLinksByLang();
     });
