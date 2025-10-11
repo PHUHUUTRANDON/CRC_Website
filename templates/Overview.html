@@ -19,7 +19,7 @@
     }
     .card {
       border-radius: 15px;
-      overflow: hidden; /* ép con theo border-radius */
+      overflow: hidden;
     }
     .btn-primary {
       background-color: #004aad;
@@ -42,17 +42,15 @@
     .bgbl {
       background-color: #f2f9fc;
     }
-
-    /* Style cho dropdown cùng màu navbar */
     .navbar .dropdown-menu {
-      background-color: #002855; /* cùng màu navbar */
-      border: none;              /* bỏ viền */
+      background-color: #002855;
+      border: none;
     }
     .navbar .dropdown-menu .dropdown-item {
-      color: white;              /* chữ trắng */
+      color: white;
     }
     .navbar .dropdown-menu .dropdown-item:hover {
-      background-color: #004aad; /* xanh nhạt hơn khi hover */
+      background-color: #004aad;
       color: #fff;
     }
     .navbar .nav-link:hover {
@@ -92,8 +90,8 @@
             Change Language
           </a>
           <ul class="dropdown-menu" aria-labelledby="langDropdown">
-            <li><a class="dropdown-item" href="?lang=en">English</a></li>
-            <li><a class="dropdown-item" href="?lang=vi">Tiếng Việt</a></li>
+            <li><a class="dropdown-item" href="#" data-lang="en">English</a></li>
+            <li><a class="dropdown-item" href="#" data-lang="vi">Tiếng Việt</a></li>
           </ul>
         </li>
       </ul>
@@ -130,24 +128,14 @@
 
   <!-- Footer -->
   <footer class="text-center py-3 mt-4" style="background-color: #3a3c3d; color: white;">
-    <p id="footerText" style="margin: 0; font-size: 14px;">
-      © 2025 Colorectal Cancer Prediction
-    </p>
+    <p id="footerText" style="margin: 0; font-size: 14px;">© 2025 Colorectal Cancer Prediction</p>
   </footer>
 
   <!-- Script -->
   <script>
-    // Detect language from URL parameter
-    function getParameterByName(name) {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(name);
-    }
+    let currentLang = 'en'; // Default language
 
-    // Set initial language
-    let currentLang = getParameterByName('lang') || 'en';
-    if (currentLang !== 'en' && currentLang !== 'vi') currentLang = 'en';
-
-    // Language Switching Logic
+    // Language translations
     const translations = {
       en: {
         mainTitle: "Deep Learning Approaches for Non-invasive <br> Colorectal Cancer Prediction",
@@ -158,12 +146,10 @@
         navAboutUs: "About Us",
         langDropdown: "Change Language",
         crcOverviewTitle: "Overview of Colorectal Cancer",
-        crcDescription1: "Colorectal cancer (CRC) is a disease in which abnormal cells grow uncontrollably in the colon or rectum, leading to tumor formation. ",
+        crcDescription1: "Colorectal cancer (CRC) is a disease in which abnormal cells grow uncontrollably in the colon or rectum, leading to tumor formation.",
         crcDescription2: "Worldwide, CRC is the third most common cancer, responsible for 10% of all cases, and the second leading cause of cancer death. In Vietnam, CRC is the fourth leading cancer, accounting for 9.3% of all new cases in 2022, with more than 16,000 new diagnoses and 8,000 deaths reported. The rising incidence highlights its growing impact on public health.",
         crcDescription3: "Various risk factors of CRC have been identified, including genetic factors, eating habits, sedentary lifestyle, polyps, and ulcerative colitis. Without early detection and treatment, these tumors can invade surrounding tissues and metastasize to distant organs, significantly reducing survival outcomes.",
         extraTitle1: "",
-        extraTitle2: "Overview of Colorectal Cancer",
-        extraTitle3: "Overview of Colorectal Cancer",
         footerText: "© 2025 Colorectal Cancer Prediction"
       },
       vi: {
@@ -179,91 +165,80 @@
         crcDescription2: "Trên toàn cầu, CRC là loại ung thư phổ biến thứ ba, chiếm khoảng 10% tổng số ca ung thư và là nguyên nhân tử vong đứng thứ hai do ung thư. Tại Việt Nam, CRC đứng thứ tư trong các loại ung thư thường gặp, chiếm 9,3% tổng số ca mắc mới năm 2022, với hơn 16.000 trường hợp được chẩn đoán mới và khoảng 8.000 ca tử vong. Tỷ lệ mắc bệnh ngày càng tăng cho thấy gánh nặng và tác động đáng kể của CRC đối với sức khỏe cộng đồng.",
         crcDescription3: "Các yếu tố nguy cơ của CRC đã được xác định bao gồm: yếu tố di truyền, thói quen ăn uống, lối sống ít vận động, sự xuất hiện của polyp, và viêm loét đại tràng. Nếu không được phát hiện và điều trị sớm, khối u có thể xâm lấn mô xung quanh và di căn đến các cơ quan khác, làm giảm đáng kể khả năng sống sót của người bệnh.",
         extraTitle1: "",
-        extraTitle2: "Tổng quan về Ung thư Đại Trực Tràng",
-        extraTitle3: "Tổng quan về Ung thư Đại Trực Tràng",
         footerText: "© 2025 Dự đoán Ung thư Đại Trực Tràng"
       }
     };
 
-    // Function to switch language
+    // Switch language function
     function switchLang(lang) {
-      document.getElementById("mainTitle").innerHTML = translations[lang].mainTitle;
-      document.getElementById("navPredict").textContent = translations[lang].navPredict;
-      document.getElementById("navOverview").textContent = translations[lang].navOverview;
-      document.getElementById("navHowItWorks").textContent = translations[lang].navHowItWorks;
-      document.getElementById("navContact").textContent = translations[lang].navContact;
-      document.getElementById("navAboutUs").textContent = translations[lang].navAboutUs;
-      document.getElementById("langDropdown").textContent = translations[lang].langDropdown;
+      try {
+        if (!translations[lang]) throw new Error(`Invalid language: ${lang}`);
+        currentLang = lang;
+        console.log('Switching to language:', lang); // Debug
+        document.getElementById("mainTitle").innerHTML = translations[lang].mainTitle;
+        document.getElementById("navPredict").textContent = translations[lang].navPredict;
+        document.getElementById("navOverview").textContent = translations[lang].navOverview;
+        document.getElementById("navHowItWorks").textContent = translations[lang].navHowItWorks;
+        document.getElementById("navContact").textContent = translations[lang].navContact;
+        document.getElementById("navAboutUs").textContent = translations[lang].navAboutUs;
+        document.getElementById("langDropdown").textContent = translations[lang].langDropdown;
+        document.getElementById("crcOverviewTitle").textContent = translations[lang].crcOverviewTitle;
+        document.getElementById("crcDescription1").textContent = translations[lang].crcDescription1;
+        document.getElementById("crcDescription2").textContent = translations[lang].crcDescription2;
+        document.getElementById("crcDescription3").textContent = translations[lang].crcDescription3;
+        document.getElementById("extraTitle1").textContent = translations[lang].extraTitle1;
+        document.getElementById("footerText").textContent = translations[lang].footerText;
 
-      document.getElementById("crcOverviewTitle").textContent = translations[lang].crcOverviewTitle;
-      document.getElementById("crcDescription1").textContent = translations[lang].crcDescription1;
-      document.getElementById("crcDescription2").textContent = translations[lang].crcDescription2;
-      document.getElementById("crcDescription3").textContent = translations[lang].crcDescription3;
-      document.getElementById("extraTitle1").textContent = translations[lang].extraTitle1;
-      document.getElementById("extraTitle2").textContent = translations[lang].extraTitle2;
-      document.getElementById("extraTitle3").textContent = translations[lang].extraTitle3;
-      document.getElementById("footerText").textContent = translations[lang].footerText;
-
-      // Update URL without reloading the page
-      window.history.pushState({}, '', `?lang=${lang}`);
+        document.documentElement.lang = lang;
+        window.history.pushState({}, '', `?lang=${lang}`);
+        updateNavLinksByLang();
+      } catch (error) {
+        console.error('Error in switchLang:', error);
+      }
     }
 
-
-
-
-
-
-    document.addEventListener('DOMContentLoaded', () => {
-  // 1. Nếu URL có ?lang=vi thì dịch sang tiếng Việt
-  const urlLang = new URLSearchParams(window.location.search).get('lang');
-  if (urlLang === 'vi') {
-    switchLang('vi', false); // false = không push thêm param nữa
-  }
-
-  // 2. Cập nhật tất cả link trong navbar dựa trên ngôn ngữ hiện tại
-  function updateNavLinksByLang() {
-    const isVi = document.getElementById("navPredict")?.textContent.trim() === 'Dự đoán';
-    document.querySelectorAll('a.nav-link').forEach(a => {
-      const href = a.getAttribute('href');
-      if (!href || href.startsWith('#') || href.startsWith('http')) return;
-      const url = new URL(href, location.origin);
-      if (isVi) {
-        url.searchParams.set('lang', 'vi');
-      } else {
-        url.searchParams.delete('lang');
-      }
-      a.setAttribute('href', url.pathname + url.search);
-    });
-  }
-
-  // 3. Gọi update mỗi khi đổi ngôn ngữ
-  const origSwitchLang = window.switchLang;
-  window.switchLang = function(lang, push = true) {
-    origSwitchLang(lang, push);
-    updateNavLinksByLang();
-  };
-
-  // 4. Lần đầu load cũng cập nhật nav links
-  updateNavLinksByLang();
-});
-
-
-
-
-
-
-
-
-    // Apply initial language
-    switchLang(currentLang);
-
-    // Handle language switch via dropdown
-    document.querySelectorAll('.dropdown-item').forEach(item => {
-      item.addEventListener('click', function(e) {
-        e.preventDefault();
-        const lang = this.getAttribute('href').split('=')[1];
-        switchLang(lang);
+    // Update navigation links
+    function updateNavLinksByLang() {
+      const isVi = currentLang === 'vi';
+      console.log('Is Vietnamese:', isVi); // Debug
+      document.querySelectorAll('a.nav-link').forEach(a => {
+        const href = a.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('http')) return;
+        const url = new URL(href, location.origin);
+        if (isVi) {
+          url.searchParams.set('lang', 'vi');
+        } else {
+          url.searchParams.delete('lang');
+        }
+        a.setAttribute('href', url.pathname + url.search);
+        console.log('Updated link:', href, 'to', a.getAttribute('href')); // Debug
       });
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      // Set initial language
+      const urlLang = new URLSearchParams(window.location.search).get('lang');
+      console.log('Detected lang:', urlLang); // Debug
+      if (urlLang === 'vi') {
+        currentLang = 'vi';
+        switchLang('vi');
+      } else {
+        currentLang = 'en';
+        switchLang('en');
+      }
+
+      // Handle dropdown clicks
+      document.querySelectorAll('.dropdown-item').forEach(item => {
+        item.addEventListener('click', function(e) {
+          e.preventDefault();
+          const lang = this.getAttribute('data-lang');
+          console.log('Dropdown selected lang:', lang); // Debug
+          switchLang(lang);
+        });
+      });
+
+      updateNavLinksByLang();
     });
   </script>
 </body>
