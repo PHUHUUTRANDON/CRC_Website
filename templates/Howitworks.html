@@ -56,11 +56,13 @@
     .navbar .nav-link:hover {
       color: gray !important;
     }
+    .content-section {
+      padding: 20px 0;
+    }
   </style>
 </head>
 
 <body>
-
   <div width="100%" align="center" style="padding: 10px; display: flex; align-items: center; justify-content: center; gap: 140px; background-color: white;">
     <img src="{{ url_for('static', filename='images/logo_Cancer.png') }}" alt="Logo" style="height: 90px;">
     <p id="mainTitle" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: 900; font-size: 200%; color: #003580;">
@@ -109,25 +111,22 @@
 
   <!-- Content -->
   <div class="container content-section">
-    <h2 id="section1">How Deep Learning Works</h2>
-    <p id="desc1">
-      Colorectal cancer (CRC) is one of the most common types of cancer worldwide, affecting the colon and rectum. It typically develops from precancerous polyps and may progress silently over time. Early detection through screening methods such as colonoscopy or fecal tests significantly improves treatment outcomes.
-    </p>
-    <p id="desc2">
-      Risk factors for CRC include age, family history, diet, lifestyle, and certain genetic conditions. Symptoms may include changes in bowel habits, blood in stool, abdominal discomfort, and unexplained weight loss.
-    </p>
-    <p id="desc3">
-      Advances in deep learning and predictive modeling now allow for non-invasive tools to estimate CRC risk and guide clinical decisions. Our tool integrates patient data to provide personalized predictions, helping clinicians and patients make informed choices.
-    </p>
-    <h2 id="section2">How the model is constructed</h2>
-    <h2 id="section3">Validation of model on Vietnamese Data</h2>
+    <h2 id="section1"></h2>
+    <p id="desc1"></p>
+    <p id="desc2"></p>
+    <p id="desc3"></p>
+    <h2 id="section2"></h2>
+    <h2 id="section3"></h2>
   </div>
 
   <!-- Footer -->
-  <footer class="text-center py-3 mt-4" style="background-color: #3a3c3d; color: white;">
-    <p id="footerText" style="margin: 0; font-size: 14px;">
-      © 2025 Colorectal Cancer Prediction
-    </p>
+  <footer>
+    <div style="width: 100%; height: 100px; background-color: #002855; padding: 0px"></div>
+    <div class="text-center py-3" style="background-color: #3a3c3d; color: white;">
+      <p id="footerText" style="margin: 0; font-size: 14px;">
+        © 2025 Colorectal Cancer Prediction
+      </p>
+    </div>
   </footer>
 
   <!-- Script -->
@@ -149,12 +148,11 @@
         navContact: "Contact",
         navAboutUs: "About Us",
         langDropdown: "Change Language",
-        section1: "How Deep Learning Works",
-        desc1: "Colorectal cancer (CRC) is one of the most common types of cancer worldwide, affecting the colon and rectum. It typically develops from precancerous polyps and may progress silently over time. Early detection through screening methods such as colonoscopy or fecal tests significantly improves treatment outcomes.",
-        desc2: "Risk factors for CRC include age, family history, diet, lifestyle, and certain genetic conditions. Symptoms may include changes in bowel habits, blood in stool, abdominal discomfort, and unexplained weight loss.",
-        desc3: "Advances in deep learning and predictive modeling now allow for non-invasive tools to estimate CRC risk and guide clinical decisions. Our tool integrates patient data to provide personalized predictions, helping clinicians and patients make informed choices.",
-        section2: "How the model is constructed",
-        section3: "Validation of model on Vietnamese Data",
+       
+        desc1: "Deep learning is a branch of machine learning that mimics how the human brain processes information. It uses artificial neural networks with multiple layers to learn from large datasets. In the context of colorectal cancer (CRC) prediction, deep learning models can analyze complex patterns in gene expression data to identify risk factors and predict disease outcomes. By training on diverse datasets, these models can improve accuracy and assist clinicians in making informed decisions.",
+        desc2: "Advances in deep learning and predictive modeling now allow for non-invasive tools to estimate CRC risk and guide clinical decisions. Our tool integrates patient data to provide personalized predictions, helping clinicians and patients make informed choices.",
+        desc3: "The model is designed using a Multi-Layer Neural Network (MLP) architecture using Scikit Learn Library. The model is trained on a published datasets and validated on both published datasets and Vietnamese datasets.",
+   
         footerText: "© 2025 Colorectal Cancer Prediction"
       },
       vi: {
@@ -165,17 +163,17 @@
         navContact: "Liên hệ",
         navAboutUs: "Về chúng tôi",
         langDropdown: "Chọn ngôn ngữ",
-        section1: "Cách thức Hoạt động của Deep Learning",
-        desc1: "Ung thư đại trực tràng (CRC) là một trong những loại ung thư phổ biến nhất trên toàn thế giới, ảnh hưởng đến đại tràng và trực tràng. Nó thường phát triển từ các polyp tiền ung thư và có thể tiến triển âm thầm theo thời gian. Việc phát hiện sớm thông qua các phương pháp sàng lọc như nội soi đại tràng hoặc xét nghiệm phân giúp cải thiện đáng kể kết quả điều trị.",
-        desc2: "Các yếu tố nguy cơ của CRC bao gồm tuổi tác, tiền sử gia đình, chế độ ăn uống, lối sống và một số tình trạng di truyền. Các triệu chứng có thể bao gồm thay đổi thói quen đi tiêu, máu trong phân, khó chịu ở bụng và giảm cân không rõ nguyên nhân.",
-        desc3: "Những tiến bộ trong học sâu và mô hình dự đoán hiện nay cho phép phát triển các công cụ không xâm lấn để ước lượng rủi ro CRC và hướng dẫn quyết định lâm sàng. Công cụ của chúng tôi tích hợp dữ liệu bệnh nhân để cung cấp các dự đoán cá nhân hóa, giúp bác sĩ và bệnh nhân đưa ra lựa chọn sáng suốt.",
-        section2: "Cách mô hình được xây dựng",
-        section3: "Xác thực mô hình trên dữ liệu Việt Nam",
+        
+        desc1: "Học sâu là một nhánh của học máy trong đó thuật toán sẽ mô phỏng cách bộ não con người xử lý thông tin. Các mạng nơ-ron nhân tạo được thiết kế với nhiều lớp để học từ các tập dữ liệu lớn. Trong lĩnh vực dự đoán ung thư đại trực tràng, các mô hình deep learning có thể phân tích các mẫu phức tạp trong dữ liệu biểu hiện gen nhằm xác định các yếu tố nguy cơ và dự đoán tiến triển bệnh. Bằng cách huấn luyện trên nhiều tập dữ liệu đa dạng, các mô hình này có thể nâng cao độ chính xác và hỗ trợ bác sĩ đưa ra quyết định lâm sàng chính xác hơn.",
+        desc2: "Những tiến bộ trong lĩnh vực deep learning và mô hình dự đoán hiện nay cho phép phát triển các công cụ không xâm lấn để ước tính nguy cơ mắc ung thư đại trực tràng và hỗ trợ quyết định lâm sàng. Công cụ của chúng tôi tích hợp dữ liệu bệnh nhân để đưa ra các dự đoán cá nhân hóa, giúp bác sĩ và người bệnh đưa ra lựa chọn chính xác và phù hợp.",
+        desc3: "Mô hình được thiết kế dựa trên kiến trúc Mạng Nơ-ron Đa lớp (MLP) sử dụng thư viện Scikit-learn. Mô hình được huấn luyện trên các tập dữ liệu đã công bố và được kiểm chứng trên cả dữ liệu đã công bố lẫn dữ liệu từ Việt Nam.",
+    
         footerText: "© 2025 Dự đoán Ung thư Đại Trực Tràng"
       }
     };
 
     function switchLang(lang) {
+      currentLang = lang;
       document.getElementById("mainTitle").innerHTML = translations[lang].mainTitle;
       document.getElementById("navPredict").textContent = translations[lang].navPredict;
       document.getElementById("navOverview").textContent = translations[lang].navOverview;
@@ -193,44 +191,43 @@
       document.getElementById("footerText").textContent = translations[lang].footerText;
 
       window.history.pushState({}, '', `?lang=${lang}`);
+      updateNavLinksByLang();
     }
 
-
     document.addEventListener('DOMContentLoaded', () => {
-  // 1. Nếu URL có ?lang=vi thì dịch sang tiếng Việt
-  const urlLang = new URLSearchParams(window.location.search).get('lang');
-  if (urlLang === 'vi') {
-    switchLang('vi', false); // false = không push thêm param nữa
-  }
-
-  // 2. Cập nhật tất cả link trong navbar dựa trên ngôn ngữ hiện tại
-  function updateNavLinksByLang() {
-    const isVi = document.getElementById("navPredict")?.textContent.trim() === 'Dự đoán';
-    document.querySelectorAll('a.nav-link').forEach(a => {
-      const href = a.getAttribute('href');
-      if (!href || href.startsWith('#') || href.startsWith('http')) return;
-      const url = new URL(href, location.origin);
-      if (isVi) {
-        url.searchParams.set('lang', 'vi');
+      // Set initial language based on URL parameter
+      const urlLang = getParameterByName('lang');
+      if (urlLang === 'vi') {
+        switchLang('vi');
       } else {
-        url.searchParams.delete('lang');
+        switchLang('en');
       }
-      a.setAttribute('href', url.pathname + url.search);
+
+      // Update nav links based on current language
+      function updateNavLinksByLang() {
+        const isVi = document.getElementById("navPredict").textContent.trim() === 'Dự đoán';
+        document.querySelectorAll('a.nav-link').forEach(a => {
+          const href = a.getAttribute('href');
+          if (!href || href.startsWith('#') || href.startsWith('http')) return;
+          const url = new URL(href, location.origin);
+          if (isVi) {
+            url.searchParams.set('lang', 'vi');
+          } else {
+            url.searchParams.delete('lang');
+          }
+          a.setAttribute('href', url.pathname + url.search);
+        });
+      }
+
+      // Override switchLang to update nav links
+      const origSwitchLang = window.switchLang;
+      window.switchLang = function(lang) {
+        origSwitchLang(lang);
+        updateNavLinksByLang();
+      };
+
+      updateNavLinksByLang();
     });
-  }
-
-  // 3. Gọi update mỗi khi đổi ngôn ngữ
-  const origSwitchLang = window.switchLang;
-  window.switchLang = function(lang, push = true) {
-    origSwitchLang(lang, push);
-    updateNavLinksByLang();
-  };
-
-  // 4. Lần đầu load cũng cập nhật nav links
-  updateNavLinksByLang();
-});
-
-
   </script>
 </body>
 </html>
