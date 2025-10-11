@@ -202,6 +202,9 @@
 
   <!-- Prediction + 3Dmol Script -->
   <script>
+    let currentLang = 'en'; // Ngôn ngữ mặc định là tiếng Anh
+    let lastPrediction = null; // Biến lưu trữ kết quả dự đoán gần nhất
+
     document.getElementById("predictForm").addEventListener("submit", async function(e){
       e.preventDefault();
       let payload = {
@@ -218,9 +221,15 @@
         body: JSON.stringify(payload)
       });
       let data = await res.json();
+      // Lưu trữ kết quả dự đoán
+      lastPrediction = data.Prediction;
+      // Chọn bản dịch dựa trên ngôn ngữ hiện tại với logic đảo ngược
+      const predictionText = data.Prediction === 'Cancer' 
+        ? translations[currentLang].predictionNormal 
+        : translations[currentLang].predictionHighRisk;
       document.getElementById("result").innerHTML =
-        `<div class="alert ${data.Prediction === 'Cancer' ? 'alert-danger' : 'alert-success'}">
-          Prediction: <b>${data.Prediction}</b><br>
+        `<div class="alert ${data.Prediction === 'Cancer' ? 'alert-success' : 'alert-danger'}">
+          ${translations[currentLang].predict}: <b>${predictionText}</b><br>
         </div>`;
     });
 
@@ -267,7 +276,9 @@
         sort1Description: "This gene encodes a member of the VPS10-related sortilin family of proteins. The encoded preproprotein is proteolytically processed by furin to generate the mature receptor.",
         echdc3Description: "Predicted to enable enoyl-CoA hydratase activity. Involved in positive regulation of cellular response to insulin stimulus. Located in mitochondrion.",
         modelPerformanceTitle: "Model Performance Assessing by AUC and Sensitivity Using Deep Learning Model",
-        rocTitle: "Receiver Operator Curve Across Datasets"
+        rocTitle: "Receiver Operator Curve Across Datasets",
+        predictionNormal: "Normal",
+        predictionHighRisk: "High Cancer Risk"
       },
       vi: {
         title: "Ứng dụng Mô hình Học sâu trong Dự đoán <br> Ung thư Đại Trực Tràng Không Xâm Lấn",
@@ -291,12 +302,15 @@
         sort1Description: "Gen này mã hóa một thành viên của họ protein sortilin liên quan đến VPS10. Protein tiền thân được mã hóa sẽ được xử lý proteolytically bởi furin để tạo ra thụ thể trưởng thành.",
         echdc3Description: "Dự đoán có khả năng kích hoạt hoạt động enoyl-CoA hydratase. Tham gia vào điều hòa tích cực phản ứng tế bào với kích thích insulin. Được tìm thấy ở ty thể.",
         modelPerformanceTitle: "Hiệu suất Mô hình Đánh giá bằng AUC và Độ Nhạy Sử dụng Mô hình Học Sâu",
-        rocTitle: "Đường Cong ROC trên Các Tập Dữ Liệu"
+        rocTitle: "Đường Cong ROC trên Các Tập Dữ Liệu",
+        predictionNormal: "Bình thường",
+        predictionHighRisk: "Nguy Cơ Ung thư Cao"
       }
     };
 
     function switchLang(lang) {
-      document.getElementById("title").innerHTML = translations[lang].title; // Use innerHTML to preserve <br>
+      currentLang = lang; // Cập nhật ngôn ngữ hiện tại
+      document.getElementById("title").innerHTML = translations[lang].title;
       document.getElementById("navPredict").textContent = translations[lang].predict;
       document.getElementById("navOverview").textContent = translations[lang].overview;
       document.getElementById("navHowItWorks").textContent = translations[lang].howitworks;
@@ -320,48 +334,51 @@
       document.getElementById("echdc3Description").textContent = translations[lang].echdc3Description;
       document.getElementById("modelPerformanceTitle").textContent = translations[lang].modelPerformanceTitle;
       document.getElementById("rocTitle").textContent = translations[lang].rocTitle;
+
+      // Cập nhật lại kết quả dự đoán nếu có
+      if (lastPrediction) {
+        const predictionText = lastPrediction === 'Cancer' 
+          ? translations[currentLang].predictionNormal 
+          : translations[currentLang].predictionHighRisk;
+        document.getElementById("result").innerHTML =
+          `<div class="alert ${lastPrediction === 'Cancer' ? 'alert-success' : 'alert-danger'}">
+            ${translations[currentLang].predict}: <b>${predictionText}</b><br>
+          </div>`;
+      }
+
+      updateNavLinksByLang();
     }
 
-
-
-
-
-
-
-
-
-
-// ====================================================================================================
     document.addEventListener('DOMContentLoaded', () => {
-  const urlLang = new URLSearchParams(window.location.search).get('lang');
-  if (urlLang === 'vi') {
-    switchLang('vi', false); 
-  }
-  function updateNavLinksByLang() {
-    const isVi = document.getElementById("navPredict")?.textContent.trim() === 'Dự đoán';
-    document.querySelectorAll('a.nav-link').forEach(a => {
-      const href = a.getAttribute('href');
-      if (!href || href.startsWith('#') || href.startsWith('http')) return;
-      const url = new URL(href, location.origin);
-      if (isVi) {
-        url.searchParams.set('lang', 'vi');
+      const urlLang = new URLSearchParams(window.location.search).get('lang');
+      if (urlLang === 'vi') {
+        currentLang = 'vi';
+        switchLang('vi'); 
       } else {
-        url.searchParams.delete('lang');
+        currentLang = 'en';
+        switchLang('en');
       }
-      a.setAttribute('href', url.pathname + url.search);
+      function updateNavLinksByLang() {
+        const isVi = document.getElementById("navPredict")?.textContent.trim() === 'Dự đoán';
+        document.querySelectorAll('a.nav-link').forEach(a => {
+          const href = a.getAttribute('href');
+          if (!href || href.startsWith('#') || href.startsWith('http')) return;
+          const url = new URL(href, location.origin);
+          if (isVi) {
+            url.searchParams.set('lang', 'vi');
+          } else {
+            url.searchParams.delete('lang');
+          }
+          a.setAttribute('href', url.pathname + url.search);
+        });
+      }
+      const origSwitchLang = window.switchLang;
+      window.switchLang = function(lang, push = true) {
+        origSwitchLang(lang);
+        updateNavLinksByLang();
+      };
+      updateNavLinksByLang();
     });
-  }
-  const origSwitchLang = window.switchLang;
-  window.switchLang = function(lang, push = true) {
-    origSwitchLang(lang, push);
-    updateNavLinksByLang();
-  };
-  updateNavLinksByLang();
-});
-// ====================================================================================================
-
-
-
   </script>
 
   <!-- Footer -->
@@ -375,4 +392,3 @@
   </footer>
 </body>
 </html>
-
