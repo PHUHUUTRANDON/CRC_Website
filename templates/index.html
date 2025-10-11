@@ -90,8 +90,8 @@
             Change Language
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#" onclick="switchLang('en')">English</a></li>
-            <li><a class="dropdown-item" href="#" onclick="switchLang('vi')">Tiếng Việt</a></li>
+            <li><a class="dropdown-item" href="#" data-lang="en">English</a></li>
+            <li><a class="dropdown-item" href="#" data-lang="vi">Tiếng Việt</a></li>
           </ul>
         </li>
       </ul>
@@ -200,12 +200,13 @@
     </div>
   </div>
 
-  <!-- Prediction + 3Dmol Script -->
+  <!-- Prediction + 3Dmol + Language Script -->
   <script>
-    let currentLang = 'en'; // Ngôn ngữ mặc định là tiếng Anh
-    let lastPrediction = null; // Biến lưu trữ kết quả dự đoán gần nhất
+    let currentLang = 'en'; // Default language
+    let lastPrediction = null; // Store last prediction result
 
-    document.getElementById("predictForm").addEventListener("submit", async function(e){
+    // Prediction form submission
+    document.getElementById("predictForm").addEventListener("submit", async function(e) {
       e.preventDefault();
       let payload = {
         ct_echdc3: document.getElementById("ct_echdc3").value,
@@ -215,25 +216,29 @@
         age: document.getElementById("age").value
       };
 
-      let res = await fetch("/predict", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-      let data = await res.json();
-      // Lưu trữ kết quả dự đoán
-      lastPrediction = data.Prediction;
-      // Chọn bản dịch dựa trên ngôn ngữ hiện tại với logic đảo ngược
-      const predictionText = data.Prediction === 'Cancer' 
-        ? translations[currentLang].predictionNormal 
-        : translations[currentLang].predictionHighRisk;
-      document.getElementById("result").innerHTML =
-        `<div class="alert ${data.Prediction === 'Cancer' ? 'alert-success' : 'alert-danger'}">
-          ${translations[currentLang].predict}: <b>${predictionText}</b><br>
-        </div>`;
+      try {
+        let res = await fetch("/predict", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        let data = await res.json();
+        lastPrediction = data.Prediction;
+        const predictionText = lastPrediction === 'Cancer' 
+          ? translations[currentLang].predictionNormal 
+          : translations[currentLang].predictionHighRisk;
+        document.getElementById("result").innerHTML =
+          `<div class="alert ${lastPrediction === 'Cancer' ? 'alert-success' : 'alert-danger'}">
+            ${translations[currentLang].predict}: <b>${predictionText}</b><br>
+          </div>`;
+      } catch (error) {
+        console.error('Prediction error:', error);
+        document.getElementById("result").innerHTML =
+          `<div class="alert alert-danger">Error: Unable to get prediction. Please try again.</div>`;
+      }
     });
 
-    // Load PDB files from static/images
+    // Load PDB files for 3D visualization
     function loadPDB(viewerId, pdbFile) {
       let element = document.getElementById(viewerId);
       let config = { backgroundColor: "white" };
@@ -244,15 +249,12 @@
         viewer.setStyle({}, { cartoon: { color: "spectrum" } });
         viewer.zoomTo();
         viewer.render();
+      }, 'text').fail(function() {
+        console.error('Failed to load PDB file:', pdbPath);
       });
     }
 
-    $(document).ready(function() {
-      loadPDB("viewer_sort1", "4msl.pdb");
-      loadPDB("viewer_echdc3", "2vx2.pdb");
-    });
-
-    // Language Switching Logic
+    // Language translations
     const translations = {
       en: {
         title: "Deep Learning Approaches for Non-invasive <br> Colorectal Cancer Prediction",
@@ -308,75 +310,99 @@
       }
     };
 
+    // Switch language function
     function switchLang(lang) {
-      currentLang = lang; // Cập nhật ngôn ngữ hiện tại
-      document.getElementById("title").innerHTML = translations[lang].title;
-      document.getElementById("navPredict").textContent = translations[lang].predict;
-      document.getElementById("navOverview").textContent = translations[lang].overview;
-      document.getElementById("navHowItWorks").textContent = translations[lang].howitworks;
-      document.getElementById("navContact").textContent = translations[lang].contact;
-      document.getElementById("navAboutUs").textContent = translations[lang].aboutus;
-      document.getElementById("langDropdown").textContent = translations[lang].changelang;
+      try {
+        if (!translations[lang]) throw new Error(`Invalid language: ${lang}`);
+        currentLang = lang;
+        console.log('Switching to language:', lang); // Debug
+        document.getElementById("title").innerHTML = translations[lang].title;
+        document.getElementById("navPredict").textContent = translations[lang].predict;
+        document.getElementById("navOverview").textContent = translations[lang].overview;
+        document.getElementById("navHowItWorks").textContent = translations[lang].howitworks;
+        document.getElementById("navContact").textContent = translations[lang].contact;
+        document.getElementById("navAboutUs").textContent = translations[lang].aboutus;
+        document.getElementById("langDropdown").textContent = translations[lang].changelang;
+        document.getElementById("formTitle").textContent = translations[lang].formTitle;
+        document.getElementById("lblEchdc3").textContent = translations[lang].lblEchdc3;
+        document.getElementById("lblSort1").textContent = translations[lang].lblSort1;
+        document.getElementById("lblRef").textContent = translations[lang].lblRef;
+        document.getElementById("lblSex").textContent = translations[lang].lblSex;
+        document.getElementById("sexMale").textContent = translations[lang].sexMale;
+        document.getElementById("sexFemale").textContent = translations[lang].sexFemale;
+        document.getElementById("lblAge").textContent = translations[lang].lblAge;
+        document.getElementById("btnPredict").textContent = translations[lang].btnPredict;
+        document.getElementById("disclaimer").textContent = translations[lang].disclaimer;
+        document.getElementById("proteinTitle").textContent = translations[lang].proteinTitle;
+        document.getElementById("sort1Description").textContent = translations[lang].sort1Description;
+        document.getElementById("echdc3Description").textContent = translations[lang].echdc3Description;
+        document.getElementById("modelPerformanceTitle").textContent = translations[lang].modelPerformanceTitle;
+        document.getElementById("rocTitle").textContent = translations[lang].rocTitle;
 
-      document.getElementById("formTitle").textContent = translations[lang].formTitle;
-      document.getElementById("lblEchdc3").textContent = translations[lang].lblEchdc3;
-      document.getElementById("lblSort1").textContent = translations[lang].lblSort1;
-      document.getElementById("lblRef").textContent = translations[lang].lblRef;
-      document.getElementById("lblSex").textContent = translations[lang].lblSex;
-      document.getElementById("sexMale").textContent = translations[lang].sexMale;
-      document.getElementById("sexFemale").textContent = translations[lang].sexFemale;
-      document.getElementById("lblAge").textContent = translations[lang].lblAge;
-      document.getElementById("btnPredict").textContent = translations[lang].btnPredict;
-      document.getElementById("disclaimer").textContent = translations[lang].disclaimer;
+        // Update prediction result if exists
+        if (lastPrediction) {
+          const predictionText = lastPrediction === 'Cancer' 
+            ? translations[lang].predictionNormal 
+            : translations[lang].predictionHighRisk;
+          document.getElementById("result").innerHTML =
+            `<div class="alert ${lastPrediction === 'Cancer' ? 'alert-success' : 'alert-danger'}">
+              ${translations[lang].predict}: <b>${predictionText}</b><br>
+            </div>`;
+        }
 
-      document.getElementById("proteinTitle").textContent = translations[lang].proteinTitle;
-      document.getElementById("sort1Description").textContent = translations[lang].sort1Description;
-      document.getElementById("echdc3Description").textContent = translations[lang].echdc3Description;
-      document.getElementById("modelPerformanceTitle").textContent = translations[lang].modelPerformanceTitle;
-      document.getElementById("rocTitle").textContent = translations[lang].rocTitle;
-
-      // Cập nhật lại kết quả dự đoán nếu có
-      if (lastPrediction) {
-        const predictionText = lastPrediction === 'Cancer' 
-          ? translations[currentLang].predictionNormal 
-          : translations[currentLang].predictionHighRisk;
-        document.getElementById("result").innerHTML =
-          `<div class="alert ${lastPrediction === 'Cancer' ? 'alert-success' : 'alert-danger'}">
-            ${translations[currentLang].predict}: <b>${predictionText}</b><br>
-          </div>`;
+        document.documentElement.lang = lang;
+        window.history.pushState({}, '', `?lang=${lang}`);
+        updateNavLinksByLang();
+      } catch (error) {
+        console.error('Error in switchLang:', error);
       }
-
-      updateNavLinksByLang();
     }
 
+    // Update navigation links
+    function updateNavLinksByLang() {
+      const isVi = currentLang === 'vi';
+      console.log('Is Vietnamese:', isVi); // Debug
+      document.querySelectorAll('a.nav-link').forEach(a => {
+        const href = a.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('http')) return;
+        const url = new URL(href, location.origin);
+        if (isVi) {
+          url.searchParams.set('lang', 'vi');
+        } else {
+          url.searchParams.delete('lang');
+        }
+        a.setAttribute('href', url.pathname + url.search);
+        console.log('Updated link:', href, 'to', a.getAttribute('href')); // Debug
+      });
+    }
+
+    // Initialize on page load
     document.addEventListener('DOMContentLoaded', () => {
+      // Load PDB files
+      loadPDB("viewer_sort1", "4msl.pdb");
+      loadPDB("viewer_echdc3", "2vx2.pdb");
+
+      // Set initial language
       const urlLang = new URLSearchParams(window.location.search).get('lang');
+      console.log('Detected lang:', urlLang); // Debug
       if (urlLang === 'vi') {
         currentLang = 'vi';
-        switchLang('vi'); 
+        switchLang('vi');
       } else {
         currentLang = 'en';
         switchLang('en');
       }
-      function updateNavLinksByLang() {
-        const isVi = document.getElementById("navPredict")?.textContent.trim() === 'Dự đoán';
-        document.querySelectorAll('a.nav-link').forEach(a => {
-          const href = a.getAttribute('href');
-          if (!href || href.startsWith('#') || href.startsWith('http')) return;
-          const url = new URL(href, location.origin);
-          if (isVi) {
-            url.searchParams.set('lang', 'vi');
-          } else {
-            url.searchParams.delete('lang');
-          }
-          a.setAttribute('href', url.pathname + url.search);
+
+      // Handle dropdown clicks
+      document.querySelectorAll('.dropdown-item').forEach(item => {
+        item.addEventListener('click', function(e) {
+          e.preventDefault();
+          const lang = this.getAttribute('data-lang');
+          console.log('Dropdown selected lang:', lang); // Debug
+          switchLang(lang);
         });
-      }
-      const origSwitchLang = window.switchLang;
-      window.switchLang = function(lang, push = true) {
-        origSwitchLang(lang);
-        updateNavLinksByLang();
-      };
+      });
+
       updateNavLinksByLang();
     });
   </script>
@@ -385,9 +411,7 @@
   <footer>
     <div style="width: 100%; height: 100px; background-color: #002855; padding: 0px"></div>
     <div class="text-center py-3" style="background-color: #3a3c3d; color: white;">
-      <p style="margin: 0; font-size: 14px;">
-        © 2025 Colorectal Cancer Prediction
-      </p>
+      <p id="footerText" style="margin: 0; font-size: 14px;">© 2025 Colorectal Cancer Prediction</p>
     </div>
   </footer>
 </body>
