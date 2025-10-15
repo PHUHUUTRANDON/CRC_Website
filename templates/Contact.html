@@ -106,12 +106,24 @@
 
   <!-- Content -->
   <div class="container content-section py-4">
-    <h2 id="contactTitle">Contact</h2>
-    <p id="contactDescription">
-      If you have any questions, please contact us at: <br>
-      <a href="mailto:nmnam@medvnu.edu.vn">nmnam@medvnu.edu.vn</a>
-    </p>
+  <h2 id="contactTitle">Contact</h2>
+  <p id="contactDescription">
+    For further information or potential collaboration in the field of artificial intelligence for cancer diagnostics, please contact us.<br><br>
+
+    <strong>Ngo Ngoc Hai</strong><br>
+    Group Leader <br>
+    Faculty of Biological Sciences – Nong Lam University, Ho Chi Minh City<br>
+    Email: <a href="mailto:ngongochai2202003@gmail.com">ngongochai2202003@gmail.com</a><br>
+    Số điện thoại: +84 329 407 417<br><br>
+
+    <strong>PhD. Nguyen Minh Nam</strong><br>
+    Research Supervisor<br>
+    Head of the Department of Biomedical Engineering – University of Health Sciences, Vietnam National University, Ho Chi Minh City<br>
+    Email: <a href="mailto:nmnam@uhsvnu.edu.vn">nmnam@uhsvnu.edu.vn</a><br>
+    Số điện thoại: +84 904 972 804
+   </p>
   </div>
+
 
   <!-- Footer -->
   <footer class="text-center py-3 mt-4" style="background-color: #3a3c3d; color: white;">
@@ -127,30 +139,60 @@
   <script>
     const translations = {
       en: {
-        pageTitle: "Deep Learning Approaches for Non-invasive <br> Colorectal Cancer Prediction",
-        navPredict: "Predict",
-        navOverview: "CRC Overview",
-        navHow: "How It Works",
-        navContact: "Contact",
-        navAbout: "About Us",
-        navLang: "Change Language",
-        contactTitle: "Contact",
-        contactDescription: "If you have any questions, please contact us at: <br><a href='mailto:nmnam@medvnu.edu.vn'>nmnam@medvnu.edu.vn</a>",
-        footerText: "© 2025 Colorectal Cancer Prediction"
-      },
+    pageTitle: "Deep Learning Approaches for Non-invasive <br> Colorectal Cancer Prediction",
+    navPredict: "Predict",
+    navOverview: "CRC Overview",
+    navHow: "How It Works",
+    navContact: "Contact",
+    navAbout: "About Us",
+    navLang: "Change Language",
+    contactTitle: "Contact",
+    contactDescription: `
+      For further information or potential collaboration in the field of artificial intelligence for cancer diagnostics, please contact us.<br><br>
+
+      <strong>Ngo Ngoc Hai</strong><br>
+      Group Leader<br>
+      Faculty of Biological Sciences – Nong Lam University, Ho Chi Minh City<br>
+      Email: <a href="mailto:ngongochai2202003@gmail.com">ngongochai2202003@gmail.com</a><br>
+      Phone: +84 329 407 417<br><br>
+
+      <strong>PhD. Nguyen Minh Nam</strong><br>
+      Research Supervisor<br>
+      Head of the Department of Biomedical Engineering – University of Health Sciences, Vietnam National University, Ho Chi Minh City<br>
+      Email: <a href="mailto:nmnam@uhsvnu.edu.vn">nmnam@uhsvnu.edu.vn</a><br>
+      Phone: +84 904 972 804
+      `,
+    footerText: "© 2025 Colorectal Cancer Prediction"
+    },
+
       vi: {
-        pageTitle: "Ứng dụng Học Sâu trong Dự đoán <br> Ung thư Đại trực tràng Không xâm lấn",
-        navPredict: "Dự đoán",
-        navOverview: "Tổng quan CRC",
-        navHow: "Cách hoạt động",
-        navContact: "Liên hệ",
-        navAbout: "Về chúng tôi",
-        navLang: "Chọn ngôn ngữ",
-        contactTitle: "Liên hệ",
-        contactDescription: "Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ với chúng tôi qua: <br><a href='mailto:nmnam@medvnu.edu.vn'>nmnam@medvnu.edu.vn</a>",
-        footerText: "© 2025 Dự đoán Ung thư Đại trực tràng"
-      }
-    };
+    pageTitle: "Ứng dụng Học Sâu trong Dự đoán <br> Ung thư Đại trực tràng Không xâm lấn",
+    navPredict: "Dự đoán",
+    navOverview: "Tổng quan CRC",
+    navHow: "Cách hoạt động",
+    navContact: "Liên hệ",
+    navAbout: "Về chúng tôi",
+    navLang: "Chọn ngôn ngữ",
+    contactTitle: "Liên hệ",
+    contactDescription: `
+      Để biết thêm thông tin hoặc tiềm năng hợp tác trong lĩnh vực trí tuệ nhân tạo để chẩn đoán ung thư, vui lòng liên hệ với chúng tôi.<br><br>
+
+      <strong>Ngô Ngọc Hải</strong><br>
+      Trưởng nhóm nghiên cứu <br>
+      Khoa Khoa học Sinh học – Trường Đại học Nông Lâm, Thành phố Hồ Chí Minh<br>
+      Email: <a href="mailto:ngongochai2202003@gmail.com">ngongochai2202003@gmail.com</a><br>
+      Số điện thoại: +84 329 407 417<br><br>
+
+      <strong>TS. Nguyễn Minh Nam</strong><br>
+      Giáo viên hướng dẫn nghiên cứu<br>
+      Trưởng Bộ môn Kỹ thuật Y sinh – Trường Đại học Khoa học Sức Khoẻ, Đại học Quốc gia Thành phố Hồ Chí Minh<br>
+      Email: <a href="mailto:nmnam@uhsvnu.edu.vn">nmnam@uhsvnu.edu.vn</a><br>
+      Số điện thoại: +84 904 972 804
+    `,
+    footerText: "© 2025 Dự đoán Ung thư Đại trực tràng"
+    }
+  };
+
 
     function switchLang(lang, push = true) {
       document.getElementById("pageTitle").innerHTML = translations[lang].pageTitle;
