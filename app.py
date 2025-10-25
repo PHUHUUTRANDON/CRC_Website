@@ -82,7 +82,7 @@ def predict():
 
         X_scaled = scaler.transform(X_input)
         prob = float(model.predict_proba(X_scaled)[0][1])
-        pred = int(prob >= threshold)
+        pred = int(prob < threshold)
 
         return jsonify({
             "ΔCT_ECHDC3": round(dct_echdc3, 4),
@@ -99,6 +99,7 @@ def predict():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
 app.run(host="0.0.0.0", port=port, debug=True)
+
 
 
 
